@@ -1,0 +1,46 @@
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<stdlib.h>
+#include<algorithm>
+using namespace std;
+int func(vector<int> arr1 , vector<int> arr2 , int n)
+{
+    unordered_map<int , int> pos , shift_count;
+    for(int ind = 0 ; ind < n ; ind++)
+        pos[arr1[ind]] = ind;
+    int ind = 0;
+    while(ind < n)
+    {
+        int shifts = pos[arr2[ind]] - ind - 1;
+        if(shifts < 0)
+            shifts += n;
+        shift_count[shifts]++;
+        ind++;
+    }
+    int ans = 0;
+    for(auto it = shift_count.begin() ; it != shift_count.end() ; it++)
+        ans = max(ans , it->second);
+    return ans;
+}
+int main()
+{
+    int n;
+    vector< int > ans; 
+    cin >> n;
+    vector<int> arr1 , arr2;
+    int temp;
+    for(int r = 0 ; r < n ; r++)
+    {
+        cin >> temp;
+        arr1.push_back(temp);
+    }
+    for(int r = 0 ; r < n ; r++)
+    {
+        cin >> temp;
+        arr2.push_back(temp);
+    }
+    int res = func(arr1 , arr2 , n); 
+    cout << res << endl;
+    return 0;
+}
