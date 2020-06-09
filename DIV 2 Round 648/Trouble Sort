@@ -1,0 +1,48 @@
+// If we can swap any 2 elements then we can sort the array
+#include<stdlib.h>
+#include<iostream>
+#include<vector>
+using namespace std;
+string func(vector< pair<int,int> > arr)
+{
+    int n = arr.size() , r;
+    for(r = 0 ; r < n-1 ; r++)
+    {
+        if(arr[r].first > arr[r+1].first) break;
+    }
+    if(r == n-1) // Already sorted
+        return "Yes";
+    int cnt = arr[0].second;
+    for(r = 1 ; r < n ; r++)
+    {
+        if(arr[r].second != cnt) // Atleast a pair exists ( 0 ,1 ) 
+            return "Yes"; // Any we can swap any 2 elements using the 3rd Hence can sort the array
+    }
+    return "No";
+}
+int main()
+{
+    int t,n;
+    cin >> t;
+    vector< string > ans;
+    while(t--)
+    {
+        cin >> n;
+        vector< pair<int,int> > arr;
+        int temp;
+        for(int r = 0 ; r < n ; r++)
+        {
+            cin >> temp;
+            arr.push_back(make_pair(temp , 1));
+        }
+        for(int r = 0 ; r < n ; r++)
+        {
+            cin >> temp;
+            arr[r].second = temp;
+        }
+        ans.push_back(func(arr));
+    }
+    for(auto res : ans)
+        cout << res << endl;
+    return 0;
+}
