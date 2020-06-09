@@ -1,0 +1,66 @@
+    #include<iostream>
+    #include<unordered_map>
+    #include<vector>
+    #include<stdlib.h>
+    using namespace std;
+    string func(vector< vector <int> > matrix , int n , int m)
+    {
+        //unordered_map<int , int> row , col;
+        int row = 0 , col = 0;
+        for(int r = 0 ; r < n ; r++)
+        {
+            int sum = 0;
+            for(int c = 0 ; c < m ; c++)
+            {
+                sum += matrix[r][c];
+            }
+            if(sum == 0)
+                row++;
+            //row[r] = sum;
+        }
+        for(int c = 0 ; c < m ; c++)
+        {
+            int sum = 0;
+            for(int r = 0 ; r < n ; r++)
+            {
+                sum += matrix[r][c];
+            }
+            if(sum == 0)
+                col++;
+        }
+        int loser = 0;
+        while( row and col )
+        {
+            row--;
+            col--;
+            loser += 1;
+            loser %= 2;
+        }
+        return (loser) ? ("Ashish") : ("Vivek");
+    }
+    int main()
+    {
+        int t , n , m;
+        vector< string> ans;
+        cin >> t;
+        while(t--)
+        {
+            cin >> n >> m;
+            vector< vector <int> > matrix;
+            for(int r = 0 ; r < n ; r++)
+            {
+                vector<int> temp;
+                for(int c = 0 ; c < m ; c++)
+                {
+                    int val;
+                    cin >> val;
+                    temp.push_back(val);
+                }
+                matrix.push_back(temp);
+            }
+            ans.push_back( func(matrix , n , m) );
+        }
+        for(auto res : ans)
+            cout << res << endl;
+        return 0;
+    }
