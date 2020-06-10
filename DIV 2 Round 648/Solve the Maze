@@ -1,0 +1,93 @@
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<stdlib.h>
+using namespace std;
+int dx[4] = {-1,0,1,0};
+int dy[4] = {0,1,0,-1};
+string func( vector<vector<char>> grid , int n , int m )
+{
+    auto valid = [&](int a , int  b)
+    {
+        if(a < 0 || b < 0 || a >= n || b >= m) return 0;
+        return 1;
+    };
+    for(int r = 0; r < n ; r++)
+    {
+        for(int c = 0 ; c < m ; c++)
+        {
+            if(grid[r][c] == 'B')
+            {
+                for(int d = 0 ; d < 4 ; d++)
+                {
+                    int x = r + dx[d] , y = c + dy[d];
+                    if(valid(x,y) and grid[x][y] == '.') // Block the neighbours
+                        grid[x][y] = '#';
+                }
+            }
+        }
+    }
+    queue< vector<int>> q;
+    vector< vector<int>> vis(n , vector<int>(m , 0));
+    if(grid[n-1][m-1] == '.') // destination cell
+    {
+        q.push(vector<int>{n-1,m-1});
+        vis[n-1][m-1] = 1;
+    }
+    while(!q.empty())
+    {
+        vector<int> cell = q.front();
+        int r = cell[0] , c = cell[1];
+        q.pop();
+        for(int d = 0 ; d < 4 ; d++) // mark all paths possible from the destination cell
+        {
+            int x = r + dx[d] , y = c + dy[d];
+            if(valid(x,y) and !vis[x][y] and grid[x][y] != '#')
+            {
+                vis[x][y] = 1;
+                q.push(vector<int>{x,y});
+            }
+        }
+    }
+    bool ans = 1;
+    for(int r = 0; r < n ; r++)
+    {
+        for(int c = 0 ; c < m ; c++)
+        {
+            if((grid[r][c] == 'G' and !vis[r][c]) || (grid[r][c] == 'B' and vis[r][c])) // answer check
+            {
+                ans = 0;
+                break;
+            }
+        }
+    }  
+    return (ans) ? ("Yes") : ("No");
+}
+int main()
+{
+    int t;
+    cin >> t;
+    vector< string > ans;
+    while(t--)
+    {
+        int n , m;
+        cin >> n >> m;
+        vector<vector<char>> grid;
+        int temp;
+        for(int r = 0 ; r < n ; r++)
+        {
+            vector<char> temp;
+            for(int c = 0 ; c < m ; c++)
+            {
+                char x;
+                cin >> x;
+                temp.push_back(x);
+            }
+            grid.push_back(temp);
+        }
+        ans.push_back(func(grid , n , m));   
+    }
+    for(auto res : ans)
+        cout << res << endl;
+    return 0;
+}
