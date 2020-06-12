@@ -1,0 +1,35 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+    int t;
+    cin >> t;
+    vector<string> ans;
+    while(t--)
+    {
+        int n,x,u,v;
+        cin >> n >> x;
+        vector<int> deg(n+1,0);
+        for(int ind = 0 ; ind < n-1 ; ind++)
+        {
+            cin >> u >> v;
+            deg[u]++;
+            deg[v]++;
+        }
+        bool winner;
+        if(deg[x] <= 1) winner = 0;
+        else
+        {
+          // 1 2 1 2 winner
+            if(n%2 == 0) winner = 0; // Even (starting Person)
+            // 1 2 1 winner
+            else winner = 1; // Odd 
+        }
+        if(!winner) ans.push_back("Ayush");
+        else ans.push_back("Ashish");
+    }
+    for(auto res : ans)
+        cout << res << endl; 
+    return 0;
+}
