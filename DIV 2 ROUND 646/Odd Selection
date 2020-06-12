@@ -1,0 +1,36 @@
+#include<iostream>
+#include<vector>
+#include<stdlib.h>
+using namespace std;
+// No of odd elemets used for subarray of size 'x' must be odd
+string func(int * arr , int n , int x)
+{
+    vector<int> cnt(2,0);
+    for(int ind = 0 ; ind < n ; ind++)
+        cnt[arr[ind]%2]++;
+    //if((cnt[1] %2) == 0) return "No";
+    for(int odds = 1 ; odds <= cnt[1] and odds <= x; odds+=2)
+    {
+        if( x - odds <= cnt[0] )
+            return "Yes";
+    }
+    return "No";
+}
+int main()
+{
+    int t;
+    cin >> t;
+    vector<string> ans;
+    while (t--)
+    {
+        int n , x;
+        cin >> n >> x;
+        int *arr = new int[n];
+        for(int ind = 0 ; ind < n ; ind++)
+            cin >> arr[ind];
+        ans.push_back(func(arr , n , x));
+    }
+    for(auto res  : ans)
+        cout << res << endl;
+    return 0;
+}
