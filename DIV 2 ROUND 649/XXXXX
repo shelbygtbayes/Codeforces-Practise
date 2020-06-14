@@ -1,0 +1,40 @@
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int n , x;
+        cin >> n >> x;
+        int * nums = new int[n];
+        int sum = 0 , left = -1 , right = 0;
+        for(int ind = 0 ; ind < n ; ind++)
+        {
+          cin >> nums[ind];
+          sum += nums[ind];
+          if(nums[ind] % x)
+          {
+            if(left == -1) 
+                left = ind;
+            right = ind;
+          }
+        }
+        if(sum % x)
+            cout << n << endl;
+        else if(left == -1)
+            cout << -1 << endl;
+        else
+        {
+            cout << max(n-left-1 , right) << endl; 
+        }
+    }
+    return 0;
+}
+//                 |                |       
+// [0    1   2   left    .....   right   ... n]
+// Removing left -->  [left+1 ... n] --> req max_len = n - left -1
+// Removing right --> [0 ... right-1] --> req max_len = right
+// Since removing y from sum where sum % x == 0 and y%x != 0 then sum - y != 0
