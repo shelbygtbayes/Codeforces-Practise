@@ -1,0 +1,69 @@
+#include<iostream>
+#include <vector>
+#include <map>
+#include <climits>
+using namespace std;
+string func(int* arr , string s , int n)
+{
+    vector< vector< int > > groups;
+    while(true)
+    {
+        vector<int> pos0;
+        for(int ind = 0 ; ind < n ; ind++)
+        {
+            if(arr[ind] == 0)
+                pos0.push_back(ind);
+        }
+        if(pos0.size() == 0) 
+          break;
+        groups.push_back(pos0); 
+        for(int ind = 0 ; ind < n ; ind++)
+        {
+            if(arr[ind] == 0)
+                arr[ind] = INT_MAX;
+            else
+            {
+                for(auto position : pos0)
+                {
+                    arr[ind] -= abs(position - ind);
+                }
+            }
+        }
+    }
+    map<char , int > cnt;
+    for(auto c : s)
+        cnt[c]++;
+    auto end = cnt.rbegin();
+    string t(n , '?');
+    for(auto g : groups)
+    {
+        while (end->second < g.size())
+        {
+            end++;
+        }
+        for(auto pos : g)
+            t[pos] = end->first;
+        end++;
+    }
+    return t;
+}
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        string s;
+        cin >> s;
+        int n;
+        cin >> n;
+        int * arr = new int[n];
+        for(int ind = 0 ; ind < n ; ind++)
+        {
+            cin >> arr[ind];
+        }
+        cout << func(arr , s , n) << endl;       
+    }
+    return 0;
+}
+
