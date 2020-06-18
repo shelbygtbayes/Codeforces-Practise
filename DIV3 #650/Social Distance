@@ -1,0 +1,56 @@
+#include<iostream>
+using namespace std;
+int func(string s , int n , int k)
+{
+    int ans;
+    for(int index = 0 ; index < n ; index++)
+    {
+        if(s[index] == '1')
+        {
+            s[index] = '2';
+            int end = index-1 , step = 0;
+            while(end >=0 and step < k)
+            {
+              s[end] = '2';
+              step++;
+              end--;
+            }
+            int st = index+1;
+            step = 0;
+            while(st < n and step < k)
+            {
+              s[st] = '2';
+              step++;
+              st++;
+            }
+        }
+    }
+    ans = 0;
+    int index = 0 ;
+    while(index < n)
+    {
+        if(s[index] == '0')
+        {
+            ans++;
+            index += (k+1);
+        }
+        else
+            index++;
+    }
+    return ans;
+}
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n , k;
+        cin >> n >> k;
+        string s;
+        cin >> s;
+        cout << func(s , n , k) << endl;        
+    }
+    return 0;
+}
+    
