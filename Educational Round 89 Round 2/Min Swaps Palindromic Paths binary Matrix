@@ -1,0 +1,64 @@
+Approach:
+
+For Palindromic Paths 
+char[0] = char[n-1]
+char[1] = char[n-]
+... upto mid element
+
+Now same for every path we need to check this
+Since we are allowed to move down(x+1) and right (y+1) only
+Now 1st char of path at --> (0,0) and last char ---> (n-1,m-1)
+    2nd char of path --> (0,1) or (1,0) and 2nd last char --> (n-2 , m-1) or (n-1,m-2)  { same sum of the pairs of position in the grid }
+    and so on .. for rest of characters of path
+    
+   Now to combine the positions of grid ( in form of position in the palindromic path ) 
+   
+  From starting char --> ( i + j ) and it's complement from last as ((n-1+i) + (m-1+j)) 
+      group : { (0,1) (1,0) }                                       { (n-2,m-1)  (n-1,m-2) }
+  upto mid
+  To avoid duplicacy of groups after mid we fill min( i+j , n+m-2+i+j ) --> it results in the considerations for flipping one side of path 
+  only to result in palindrome
+  Now we use these groups to count the no of 1's and 0's in the paths which passes through the positions present in the group
+  Now we simply take the minimum no of 1's or 2's and simply flip them all --> result in palindrome path
+  
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int n , m;
+        cin >> n >> m;
+        vector<vector<int>> grid(n , vector<int>(m));
+        // distance groups (distance from src)
+        vector<vector<int>> groups(n+m-1);
+        for(int ind1 = 0 ; ind1 < n ; ind1++)
+        {
+            for(int ind2 = 0 ; ind2 < m ; ind2++)
+            {
+              cin >> grid[ind1][ind2];
+              int x = ind1 + ind2;
+              int y = (n-1-ind1) + (m-1-ind2);
+              if(x != y) // Not Middle 
+                  groups[min(x,y)].push_back(grid[ind1][ind2]);
+            }
+        }
+        int ans = 0;
+        for(int g = 0 ; g < n+m-1 ; g++)
+        {
+          int zeros = 0 , ones = 0;
+          for(int ind = 0 ; ind < groups[g].size() ; ind++)
+          {
+            if(groups[g][ind])  ones++;
+            else zeros++;
+          }
+          ans += min(ones ,zeros);
+        }
+        cout << ans << endl;
+    }
+    return 0;
+}
+  
