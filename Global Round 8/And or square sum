@@ -1,0 +1,53 @@
+Approach:
+Key points to know
+1) Square of a > Square of b ( a > b )
+2) 1*1 + 7*7  >  3*3 + 5*5
+3) Square of very large no leads to it's sum > sqauare of mid numbers
+Since And operation set's the common bit '1' and or operation sets the bit if any bit in given numbers is already set
+Also to get max number we require max no of bit's set
+Now to get this max number we required to get "OR" operation --> to set max bits of numbers
+Now let's represent number in bits Now we are taking perfect numbers such that we get max no of bit's set for number form
+To do this, we take an array ( representing the No of elements in array having that particular bit set )
+Now to form the Maximum number, we use this array and reduce the bit count
+After number formed we take square and it to the answer sum
+#include<iostream>
+#include<vector>
+#define ull unsigned long long
+using namespace std;
+int main()
+{
+    ull n;
+    cin >> n;
+    vector<int> binary(21,0);// 1 ... 20
+    for(int ind = 0 ; ind < n ; ind++)
+    {
+        ull x;
+        cin >> x;
+        int v = 0;
+        while(x)
+        {
+            if(x & 1)
+            {
+                binary[v]++;
+            }
+            v++;
+            x = x >> 1;
+        }
+    }
+    ull sum = 0;
+    for(int ind = 0 ; ind < n ; ind++)
+    {
+        ull val = 0;
+        for(int bit = 0 ; bit <= 20 ; bit++)
+        {
+            if(binary[bit])
+            {
+                binary[bit]--;
+                val += (1 << bit);
+            }
+        }
+        sum += val*val;    
+    }
+    cout << sum;
+    return 0;
+}
