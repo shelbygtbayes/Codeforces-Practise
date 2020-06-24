@@ -1,0 +1,52 @@
+To note here (50^10) > (10^16)
+Since we are clear for min length sequence we just need to add more characters to "codeforces"
+2 Options:
+1) (Additive) Either add any characters n-1 times ( coodeforces = 2 subsequence ) [ TLE for 10^10 and higher ]
+2) ( Multiplicative ) we know that No of subsequence = cnt[a] * cnt[b] ... c[e] for string 'abcde'
+The same concept can be applied for the 'codeforces' since no 2 consecutive chars are same        50^(len of "codeforces")
+Moreover the advantage is that : for 10^16 subsequence we require atmax count of each char = 50 ( 50^10 > 10^16 ) 
+Now we take a count vector and initialize with a single count of each character
+We increment each count and check whether the so far product count >= required subsequences
+Using the count of each char we develop the required answer string
+
+#include<iostream>
+#include<vector>
+#define ull unsigned long long
+using namespace std;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL) ; 
+    cout.tie(NULL) ;
+    ull n;
+    cin >> n;               
+    vector<int> mult(10,1);
+    ull mul = 2 , pr = 1 , prev_mul = 1;
+    while(mul < 50)
+    {
+        int ind = 0;
+        while(pr < n and ind < 10)
+        {
+            pr /= prev_mul;
+            pr *= mul;
+            mult[ind] = mul;
+            ind++;
+        }
+        if(pr >= n)
+            break;
+        mul++;
+        prev_mul++;
+    }
+    string ans = "";
+    if(pr >= n)
+    {
+        string str = "codeforces";
+        for(int ind = 0 ; ind < 10 ; ind++ )
+        {
+            for(int c = 0 ; c < mult[ind] ; c++)
+                ans += (str[ind]);
+        }
+    }
+    cout << ans;
+    return 0;
+}
